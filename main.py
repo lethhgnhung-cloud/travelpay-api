@@ -561,3 +561,16 @@ async def get_scam_alerts(
         "filter_applied": scam_type,
         "alerts": [a.dict() for a in alerts],
     }
+
+# Fix Swagger UI for Vercel/serverless
+from fastapi.openapi.docs import get_swagger_ui_html
+from fastapi.responses import HTMLResponse
+
+@app.get("/docs", include_in_schema=False)
+async def custom_swagger():
+    return get_swagger_ui_html(
+        openapi_url="/openapi.json",
+        title="TravelPay Vietnam API",
+        swagger_js_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js",
+        swagger_css_url="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui.css",
+    )
